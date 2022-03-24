@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "78237094637",
+    "firebase_url": "https://school-absence-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "school-absence",
+    "storage_bucket": "school-absence.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78237094637:android:c8ff257b4dce84b4d9b2e4",
+        "android_client_info": {
+          "package_name": "com.example.schoolabsence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78237094637-q51p5r2m68ma0r2gd4n36jh9tdebuc71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYFTHxdzPa2s3PKi_tvxWCakk20aguXAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78237094637-q51p5r2m68ma0r2gd4n36jh9tdebuc71.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
