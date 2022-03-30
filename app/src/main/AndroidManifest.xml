@@ -8,11 +8,39 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_apps"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_apps"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolAbsence">
+        <activity
+            android:name=".View.Admin.AbsenceRecap"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Users"
+            android:exported="false" />
+        <activity
+            android:name=".View.Profile"
+            android:exported="false" />
+        <activity
+            android:name=".View.HomeApp"
+            android:exported="false" />
+        <activity
+            android:name=".View.Authentication.ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".View.Authentication.SignIn"
+            android:exported="false" />
+        <activity
+            android:name=".View.Authentication.Auth"
+            android:exported="false" />
+        <activity
+            android:name=".View.Authentication.SignUp"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".View.Admin.LocationSchoolSettings"
+            android:exported="false" />
         <activity
             android:name=".View.Admin.AdministratorMenu"
             android:exported="false" />

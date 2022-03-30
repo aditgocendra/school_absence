@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">School Absence</string>
     <string name="compare_algorithm_distance">Compare Algorithm Distance</string>
+    <string name="todo">TODO</string>
 </resources>
