@@ -3,11 +3,47 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_corner.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_corner_bottom_left.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_corner_right_top.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_outline.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_round_right.xml" value="0.1895" />
         <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_top_admin.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_top_corner.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/background_top_sign_up.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/btn_circle_corner.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_absence.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_account.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_admin_panel.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_clear_absence.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_distance.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_email.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_filter.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_info.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_lock.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_logout.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_number_identification.xml" value="0.1895" />
         <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_pick_location.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/ic_username.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/layout_dialog_detail_absence.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/drawable/test.xml" value="0.1895" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_absence_recap.xml" value="0.25" />
         <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_administrator_menu.xml" value="0.33" />
-        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_compare_distance.xml" value="0.2618110236220472" />
-        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_auth.xml" value="0.25" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_compare_distance.xml" value="0.33" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_forgot_password.xml" value="0.24070115433946132" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_home_app.xml" value="0.25" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_location_school_settings.xml" value="0.33" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_profile.xml" value="0.22" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/activity_users.xml" value="0.33" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/layout_card_user.xml" value="0.33" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/layout_dialog_algorithm.xml" value="0.33" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/layout_dialog_detail_absence.xml" value="0.24070115433946132" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/layout_dialog_distance_settings.xml" value="0.24070115433946132" />
+        <entry key="..\:/Users/gocen/Documents/AndroidPoject/SchoolAbsence/app/src/main/res/layout/layout_dialog_filter_absence.xml" value="0.33" />
       </map>
     </option>
   </component>
