@@ -61,17 +61,12 @@ public class GlobalFunction {
         win.setAttributes(winParams);
     }
 
-    public static boolean ValidateEmail(String email){
+    public static boolean validateEmail(String email){
         boolean validate;
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         String emailPattern2 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
 
-        if (email.matches(emailPattern) || email.matches(emailPattern2) && email.length() > 0)
-        {
-            validate = true;
-        }else{
-            validate = false;
-        }
+        validate = email.matches(emailPattern) || email.matches(emailPattern2) && email.length() > 0;
 
         return validate;
     }

@@ -13,7 +13,7 @@ public class Algorithm {
 
     // haversine method
     public static double haversine(double latUserLocation, double longUserLocation, double latSchoolLocation, double longSchoolLocation){
-        double distance = 0;
+        double distance;
 
         // ---- /_\ lat and long
         double triLat = Math.abs(latSchoolLocation - latUserLocation);
