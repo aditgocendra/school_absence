@@ -45,6 +45,7 @@ public class LocationSchoolSettings extends AppCompatActivity {
         setContentView(binding.getRoot());
         GlobalFunction.checkWindowSetFlag(this);
 
+
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5000);
