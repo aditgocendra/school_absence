@@ -3,7 +3,6 @@ package com.example.schoolabsence.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -12,7 +11,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.schoolabsence.Model.ModelAbsenceUsers;
 import com.example.schoolabsence.Model.ModelLocationSchool;
 import com.example.schoolabsence.Model.ModelUser;
@@ -37,7 +35,7 @@ public class HomeApp extends AppCompatActivity {
 
     private double latitudeSchool, longitudeSchool;
     private float maxDistance;
-    private String algorithmUsed;
+//    private String algorithmUsed;
 
     // absence for today
     private boolean isAbsence = false;
@@ -53,7 +51,7 @@ public class HomeApp extends AppCompatActivity {
         setDataUser();
         setLocationSchool();
         setDistanceAbsence();
-        setAlgorithmUsed();
+//        setAlgorithmUsed();
         checkUserAbsence();
         setDateTime();
     }
@@ -120,21 +118,11 @@ public class HomeApp extends AppCompatActivity {
     private void absenceTeacher(double latitudeCurrent, double longitudeCurrent) {
         float distanceResult;
 
-        if (algorithmUsed == null || maxDistance == 0){
+        if (maxDistance == 0){
             Toast.makeText(this, "Error, rangefinder, please come back later", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        if (algorithmUsed.equals("haversine")){
-            // km value
-            distanceResult = (float) Algorithm.haversine(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
-        }else {
-            distanceResult = (float) Algorithm.euclidean(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
-
-            // km value
-            float oneDegreesEarth = (float) 111.322;
-            distanceResult = distanceResult * oneDegreesEarth;
-        }
+        distanceResult = (float) Algorithm.haversine(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
 
         // km value
         Log.d("Distance Km Result", String.valueOf(distanceResult));
@@ -250,13 +238,6 @@ public class HomeApp extends AppCompatActivity {
             }
         });
     }
-
-    private void setAlgorithmUsed() {
-        GlobalVariable.reference.child("algorithm_used").get()
-                .addOnCompleteListener(task -> algorithmUsed = task.getResult().getValue(String.class))
-                .addOnFailureListener(e -> Toast.makeText(HomeApp.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
 
     private void setDateTime() {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);

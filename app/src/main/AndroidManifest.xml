@@ -45,9 +45,6 @@
             android:name=".View.Admin.AdministratorMenu"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.CompareDistance"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

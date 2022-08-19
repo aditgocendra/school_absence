@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.Toast;
 import com.example.schoolabsence.R;
 import com.example.schoolabsence.Utility.GlobalFunction;
@@ -32,16 +31,9 @@ public class AdministratorMenu extends AppCompatActivity {
 
     private void listenerComponent() {
         binding.backBtn.setOnClickListener(view -> finish());
-        binding.cardCompareAlgorithm.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, CompareDistance.class));
         binding.cardLocationSchoolSettings.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, LocationSchoolSettings.class));
         binding.cardAllUser.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, Users.class));
         binding.cardAbsenceRecap.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, AbsenceRecap.class));
-
-        binding.cardAlgorithm.setOnClickListener(view -> {
-            bottomSheetDialog = new BottomSheetDialog(AdministratorMenu.this);
-            setBottomDialogAlgorithm();
-            bottomSheetDialog.show();
-        });
 
         binding.cardDistance.setOnClickListener(view -> {
             bottomSheetDialog = new BottomSheetDialog(AdministratorMenu.this);
@@ -80,68 +72,5 @@ public class AdministratorMenu extends AppCompatActivity {
 
         bottomSheetDialog.setContentView(viewBottomDialog);
 
-    }
-
-    private void setBottomDialogAlgorithm(){
-        View viewBottomDialog = getLayoutInflater().inflate(R.layout.layout_dialog_algorithm, null, false);
-        Button finishBtn = viewBottomDialog.findViewById(R.id.finish_btn);
-        RadioButton radioButtonEuclidean = viewBottomDialog.findViewById(R.id.radio_euclidean);
-        RadioButton radioButtonHaversine = viewBottomDialog.findViewById(R.id.radio_haversine);
-
-        GlobalVariable.reference.child("algorithm_used").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                String algorithm = task.getResult().getValue(String.class);
-                if (algorithm != null){
-                    if (algorithm.equals("euclidean")){
-                        radioButtonEuclidean.setChecked(true);
-                    }else {
-                        radioButtonHaversine.setChecked(true);
-                    }
-                }else {
-                    Toast.makeText(AdministratorMenu.this, "Data not found", Toast.LENGTH_SHORT).show();
-                }
-            }else {
-                Toast.makeText(AdministratorMenu.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        radioButtonEuclidean.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b){
-                radioButtonHaversine.setChecked(false);
-                radioButtonEuclidean.setChecked(true);
-            }else {
-                radioButtonHaversine.setChecked(true);
-                radioButtonEuclidean.setChecked(false);
-            }
-        });
-
-        radioButtonHaversine.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b){
-                radioButtonHaversine.setChecked(true);
-                radioButtonEuclidean.setChecked(false);
-            }else {
-                radioButtonHaversine.setChecked(false);
-                radioButtonEuclidean.setChecked(true);
-            }
-        });
-
-        finishBtn.setOnClickListener(view -> {
-            String algorithm;
-            if (radioButtonEuclidean.isChecked()){
-                algorithm = "euclidean";
-            }else {
-                algorithm = "haversine";
-            }
-            saveAlgorithmUsed(algorithm);
-            bottomSheetDialog.dismiss();
-        });
-
-        bottomSheetDialog.setContentView(viewBottomDialog);
-    }
-
-    private void saveAlgorithmUsed(String algorithm){
-        GlobalVariable.reference.child("algorithm_used").setValue(algorithm)
-                .addOnSuccessListener(unused -> Toast.makeText(AdministratorMenu.this, "Success change used algorithm", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(AdministratorMenu.this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

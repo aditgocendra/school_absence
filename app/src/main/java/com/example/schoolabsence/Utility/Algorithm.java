@@ -4,13 +4,6 @@ import android.util.Log;
 
 public class Algorithm {
 
-    // euclidean distance
-    public static double euclidean(double latUserLocation, double longUserLocation, double latSchoolLocation, double longSchoolLocation) {
-        double dx = Math.abs(latSchoolLocation - latUserLocation);
-        double dy = Math.abs(longSchoolLocation - longUserLocation);
-        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    }
-
     // haversine method
     public static double haversine(double latUserLocation, double longUserLocation, double latSchoolLocation, double longSchoolLocation){
         double distance;
