@@ -67,20 +67,53 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="12sp"
-                android:text="Time"
+                android:text="Time In"
                 android:includeFontPadding="false"
                 android:textColor="#B3B3B3"
                 android:layout_weight="1"/>
 
             <TextView
-                android:id="@+id/text_time_attend"
+                android:id="@+id/text_time_attend_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="12sp"
-                android:text="13.00 AM"
+                android:text="-"
+                android:includeFontPadding="false"
+                android:textColor="#B3B3B3"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="12sp"
+                android:text="Time Out"
+                android:includeFontPadding="false"
+                android:textColor="#B3B3B3"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/text_time_attend_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="12sp"
+                android:text="-"
                 android:includeFontPadding="false"
                 android:textColor="#B3B3B3"
                 android:layout_weight="1"/>

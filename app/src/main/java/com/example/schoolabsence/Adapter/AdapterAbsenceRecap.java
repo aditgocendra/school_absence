@@ -99,15 +99,17 @@ public class AdapterAbsenceRecap extends RecyclerView.Adapter<AdapterAbsenceReca
         LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View viewBottomDialog = li.inflate(R.layout.layout_dialog_detail_absence, null, false);
 
-        TextView textDateAttend, textTimeAttend, textDistanceAttend;
+        TextView textDateAttend, textTimeAttendIn,textTimeAttendOut, textDistanceAttend;
         textDateAttend = viewBottomDialog.findViewById(R.id.text_date_attend);
-        textTimeAttend = viewBottomDialog.findViewById(R.id.text_time_attend);
+        textTimeAttendIn = viewBottomDialog.findViewById(R.id.text_time_attend_in);
+        textTimeAttendOut = viewBottomDialog.findViewById(R.id.text_time_attend_out);
         textDistanceAttend = viewBottomDialog.findViewById(R.id.text_distance_attend);
 
         Button closeBtn = viewBottomDialog.findViewById(R.id.close_btn);
 
         textDateAttend.setText(modelAbsenceUsers.getDay());
-        textTimeAttend.setText(modelAbsenceUsers.getTime());
+        textTimeAttendIn.setText(modelAbsenceUsers.getTimeIn());
+        textTimeAttendOut.setText(modelAbsenceUsers.getTimeOut());
         textDistanceAttend.setText(modelAbsenceUsers.getDistance());
 
         closeBtn.setOnClickListener(view -> bottomSheetDialog.dismiss());

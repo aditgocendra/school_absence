@@ -17,6 +17,7 @@ import com.example.schoolabsence.Model.ModelLocationSchool;
 import com.example.schoolabsence.Utility.Algorithm;
 import com.example.schoolabsence.Utility.GlobalFunction;
 import com.example.schoolabsence.Utility.GlobalVariable;
+//import com.example.schoolabsence.databinding.ActivityCompareDistanceBinding;
 import com.example.schoolabsence.databinding.ActivityCompareDistanceBinding;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,6 +37,7 @@ public class CompareDistance extends AppCompatActivity {
 
     private double latitudeSchool, longitudeSchool;
     private double latitudeCurrent, longitudeCurrent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +129,7 @@ public class CompareDistance extends AppCompatActivity {
             if (latitudeCurrent != 0 && longitudeCurrent != 0 && latitudeSchool != 0 && longitudeSchool != 0){
                 binding.progressCircular.setVisibility(View.VISIBLE);
                 binding.compareBtn.setEnabled(false);
-//                compareAlgorithm();
+                startAlgorithm();
             }else {
                 Toast.makeText(CompareDistance.this, "Location not set!!", Toast.LENGTH_SHORT).show();
                 binding.progressCircular.setVisibility(View.GONE);
@@ -137,29 +139,22 @@ public class CompareDistance extends AppCompatActivity {
 
     }
 
-//    private void compareAlgorithm(){
-//        float euclideanResult = (float) Algorithm.euclidean(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
-//        float haversineResult = (float) Algorithm.haversine(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
-//
-//        // km value euclidean
-//        float oneDegreesEarth = (float) 111.322;
-//        euclideanResult = euclideanResult * oneDegreesEarth;
-//
-//        // km value
-//        Log.d("Distance Km Result", euclideanResult+" / "+haversineResult);
-//
-//
-//        // convert to meters
-//        float metersEuclidean = euclideanResult * 1000;
-//        float metersHaversine = haversineResult * 1000;
-//
-//        binding.resultDistanceEuclidean.setText(String.valueOf(metersEuclidean));
-//        binding.resultDistanceHaversine.setText(String.valueOf(metersHaversine));
-//
-//        binding.progressCircular.setVisibility(View.GONE);
-//        binding.compareBtn.setEnabled(true);
-//
-//    }
+    private void startAlgorithm(){
+
+        float haversineResult = (float) Algorithm.haversine(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
+
+        // km value
+        Log.d("Distance Km Result", String.valueOf(haversineResult));
+
+        // convert to meters
+        float metersHaversine = haversineResult * 1000;
+
+        binding.resultDistanceHaversine.setText(String.valueOf(metersHaversine));
+
+        binding.progressCircular.setVisibility(View.GONE);
+        binding.compareBtn.setEnabled(true);
+
+    }
 
     private void setDataSchoolLocation(){
         GlobalVariable.reference.child("location_school").get().addOnCompleteListener(task -> {

@@ -34,6 +34,7 @@ public class AdministratorMenu extends AppCompatActivity {
         binding.cardLocationSchoolSettings.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, LocationSchoolSettings.class));
         binding.cardAllUser.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, Users.class));
         binding.cardAbsenceRecap.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, AbsenceRecap.class));
+        binding.cardAlgorithm.setOnClickListener(view -> GlobalFunction.updateUI(AdministratorMenu.this, CompareDistance.class));
 
         binding.cardDistance.setOnClickListener(view -> {
             bottomSheetDialog = new BottomSheetDialog(AdministratorMenu.this);

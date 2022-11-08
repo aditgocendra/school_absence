@@ -24,7 +24,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -35,10 +38,9 @@ public class HomeApp extends AppCompatActivity {
 
     private double latitudeSchool, longitudeSchool;
     private float maxDistance;
-//    private String algorithmUsed;
 
     // absence for today
-    private boolean isAbsence = false;
+    private ModelAbsenceUsers userAbsence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class HomeApp extends AppCompatActivity {
         setDataUser();
         setLocationSchool();
         setDistanceAbsence();
-//        setAlgorithmUsed();
         checkUserAbsence();
         setDateTime();
     }
@@ -69,11 +70,20 @@ public class HomeApp extends AppCompatActivity {
         locationRequest.setFastestInterval(2000);
 
         binding.absenceBtn.setOnClickListener(view -> {
+            if (GlobalVariable.roleCurrent == null){
+                return;
+            }
             binding.absenceBtn.setEnabled(false);
-            if (isAbsence){
-                binding.absenceBtn.setEnabled(true);
-                Toast.makeText(HomeApp.this, "You have done absence today, please come back tomorrow :)", Toast.LENGTH_SHORT).show();
-            }else {
+
+            if (userAbsence != null){
+                if (!userAbsence.getTimeIn().equals("-") && !userAbsence.getTimeOut().equals("-")){
+                    binding.absenceBtn.setEnabled(true);
+                    Toast.makeText(HomeApp.this, "You have done absence today", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(HomeApp.this, "Please wait until the absence process is complete", Toast.LENGTH_SHORT).show();
+                    getCurrentLocation();
+                }
+            }else{
                 Toast.makeText(HomeApp.this, "Please wait until the absence process is complete", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
             }
@@ -124,10 +134,6 @@ public class HomeApp extends AppCompatActivity {
         }
         distanceResult = (float) Algorithm.haversine(latitudeCurrent, longitudeCurrent, latitudeSchool, longitudeSchool);
 
-        // km value
-        Log.d("Distance Km Result", String.valueOf(distanceResult));
-
-
         // convert to meters
         float distanceMeters = distanceResult * 1000;
 
@@ -138,25 +144,53 @@ public class HomeApp extends AppCompatActivity {
 
     private void saveDataAbsence(double latitudeCurrent, double longitudeCurrent, float distanceMeters) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        String month_name = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+        String monthName = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
 
-        String day = month_name.substring(0, 3)+" "+cal.get(Calendar.DATE)+", "+cal.get(Calendar.YEAR);
-        Log.d("test", day);
-        String time = binding.timeText.getText().toString();
-        ModelAbsenceUsers modelAbsenceUsers = new ModelAbsenceUsers(
-                latitudeCurrent,
-                longitudeCurrent,
-                distanceMeters+" Meters",
-                day,
-                time,
-                GlobalVariable.uidCurrent
-        );
+        String day = monthName.substring(0, 3)+" "+cal.get(Calendar.DATE)+", "+cal.get(Calendar.YEAR);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        String time = sdf.format(new Date());
+
+        ModelAbsenceUsers modelAbsenceUsers;
+
+        String hour = time.substring(0, 2);
+
+        if (userAbsence == null){
+            if (Integer.parseInt(hour) > 12){
+                modelAbsenceUsers = new ModelAbsenceUsers(
+                        latitudeCurrent,
+                        longitudeCurrent,
+                        distanceMeters+" Meters",
+                        day,
+                        "-",
+                        time,
+                        GlobalVariable.uidCurrent
+                );
+            }else {
+                modelAbsenceUsers = new ModelAbsenceUsers(
+                        latitudeCurrent,
+                        longitudeCurrent,
+                        distanceMeters+" Meters",
+                        day,
+                        time,
+                        "-",
+                        GlobalVariable.uidCurrent
+                );
+            }
+        }else{
+            if (Integer.parseInt(hour) > 12){
+                userAbsence.setTimeOut(time);
+            }else {
+                userAbsence.setTimeIn(time);
+            }
+
+            modelAbsenceUsers = userAbsence;
+        }
 
         GlobalVariable.reference.child("absence_users").child(day).child(GlobalVariable.uidCurrent).setValue(modelAbsenceUsers).addOnSuccessListener(unused -> {
             Toast.makeText(HomeApp.this, "Absence Success", Toast.LENGTH_SHORT).show();
             binding.imageAbsence.setImageResource(R.drawable.ic_clear_absence);
             binding.textDirection.setText("Thank you for taking absence today");
-            isAbsence = true;
 
         }).addOnFailureListener(e -> Toast.makeText(HomeApp.this, e.getMessage(), Toast.LENGTH_SHORT).show());
 
@@ -165,16 +199,28 @@ public class HomeApp extends AppCompatActivity {
 
     private void checkUserAbsence() {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        String month_name = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
-        String day = month_name.substring(0, 3)+" "+cal.get(Calendar.DATE)+", "+cal.get(Calendar.YEAR);
+        String monthName = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+        String day = monthName.substring(0, 3)+" "+cal.get(Calendar.DATE)+", "+cal.get(Calendar.YEAR);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        String time = sdf.format(new Date());
+        int hour = Integer.parseInt(time.substring(0, 2));
 
         GlobalVariable.reference.child("absence_users").child(day).child(GlobalVariable.uidCurrent).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                ModelAbsenceUsers modelAbsenceUsers = task.getResult().getValue(ModelAbsenceUsers.class);
-                if (modelAbsenceUsers != null){
-                    binding.imageAbsence.setImageResource(R.drawable.ic_clear_absence);
-                    binding.textDirection.setText("Thank you for taking absence today");
-                    isAbsence = true;
+                userAbsence = task.getResult().getValue(ModelAbsenceUsers.class);
+                if (userAbsence != null){
+                    if (userAbsence.getTimeIn().equals("-") && hour < 12){
+                        binding.textDirection.setText("Welcome, please absence in for today :)");
+                        binding.imageAbsence.setImageResource(R.drawable.ic_absence);
+                    }else if(userAbsence.getTimeOut().equals("-") && hour > 12){
+                        binding.textDirection.setText("Welcome, please absence out for today :)");
+                        binding.imageAbsence.setImageResource(R.drawable.ic_absence);
+                    }else{
+                        binding.imageAbsence.setImageResource(R.drawable.ic_clear_absence);
+                        binding.textDirection.setText("Thank you for taking absence today");
+                        binding.absenceBtn.setEnabled(false);
+                    }
                 }else {
                     binding.textDirection.setText("Welcome, please absence for today :)");
                     binding.imageAbsence.setImageResource(R.drawable.ic_absence);
