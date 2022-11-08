@@ -10,5 +10,6 @@
     <color name="red_calm">#EC2446</color>
     <color name="pink_calm">#F65C76</color>
     <color name="gray">#B3B3B3</color>
+    <color name="gray_white">#ECECEC</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

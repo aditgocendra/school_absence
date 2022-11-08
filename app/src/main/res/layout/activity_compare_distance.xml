@@ -348,15 +348,6 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Euclidean"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="12sp"
-                        android:textAlignment="center"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:text="Haversine"
                         android:fontFamily="@font/poppins_medium"
                         android:textSize="12sp"
@@ -378,16 +369,6 @@
                         android:text="Distance (Meters)"
                         android:fontFamily="@font/poppins_medium"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:textAlignment="center"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:id="@+id/result_distance_euclidean"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:fontFamily="@font/poppins_medium"
                         android:textSize="12sp"
                         android:textAlignment="center"
                         android:layout_weight="1"/>
@@ -422,7 +403,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:cornerRadius="6dp"
-            android:text="Compare"
+            android:text="Start"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textAllCaps="false"

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.schoolabsence.Model.ModelUser;
 import com.example.schoolabsence.Utility.GlobalFunction;
 import com.example.schoolabsence.Utility.GlobalVariable;
+import com.example.schoolabsence.View.Admin.AbsenceRecap;
 import com.example.schoolabsence.View.Admin.AdministratorMenu;
 import com.example.schoolabsence.View.Authentication.Auth;
 import com.example.schoolabsence.databinding.ActivityProfileBinding;
@@ -49,6 +50,7 @@ public class Profile extends AppCompatActivity {
     private void listenerComponent() {
         binding.backBtn.setOnClickListener(view -> finish());
         binding.pickPhotoBtn.setOnClickListener(view -> imagePick.launch("image/*"));
+        binding.headBtn.setOnClickListener(v -> GlobalFunction.updateUI(Profile.this, AbsenceRecap.class));
         binding.administratorBtn.setOnClickListener(view -> GlobalFunction.updateUI(Profile.this, AdministratorMenu.class));
         binding.signOutBtn.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
@@ -92,6 +94,10 @@ public class Profile extends AppCompatActivity {
     }
 
     private void setDataProfile(){
+        if (GlobalVariable.roleCurrent.equals("head")){
+            binding.headBtn.setVisibility(View.VISIBLE);
+        }
+
         if (GlobalVariable.roleCurrent.equals("admin")){
             binding.administratorBtn.setVisibility(View.VISIBLE);
         }

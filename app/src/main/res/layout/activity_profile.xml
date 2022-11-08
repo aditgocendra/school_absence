@@ -232,6 +232,21 @@
                 android:layout_margin="10dp"
                 android:orientation="vertical">
 
+                <!--role head-->
+                <TextView
+                    android:id="@+id/head_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="6dp"
+                    android:text="Principal"
+                    android:textColor="#B3B3B3"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:drawableEndCompat="@drawable/ic_admin_panel" />
+
                 <!--role admin-->
                 <TextView
                     android:id="@+id/administrator_btn"

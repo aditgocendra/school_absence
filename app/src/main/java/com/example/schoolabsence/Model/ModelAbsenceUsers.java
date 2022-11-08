@@ -5,7 +5,8 @@ public class ModelAbsenceUsers {
     private double longitude;
     private String distance;
     private String day;
-    private String time;
+    private String timeIn;
+    private String timeOut;
     private String keyUser;
     private String key;
 
@@ -13,12 +14,13 @@ public class ModelAbsenceUsers {
 
     }
 
-    public ModelAbsenceUsers(double latitude, double longitude, String distance, String day, String time, String keyUser) {
+    public ModelAbsenceUsers(double latitude, double longitude, String distance, String day, String timeIn, String timeOut, String keyUser) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.distance = distance;
         this.day = day;
-        this.time = time;
+        this.timeIn = timeIn;
+        this.timeOut = timeOut;
         this.keyUser = keyUser;
     }
 
@@ -54,12 +56,20 @@ public class ModelAbsenceUsers {
         this.day = day;
     }
 
-    public String getTime() {
-        return time;
+    public String getTimeIn() {
+        return timeIn;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setTimeIn(String timeIn) {
+        this.timeIn = timeIn;
+    }
+
+    public String getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(String timeOut) {
+        this.timeOut = timeOut;
     }
 
     public String getKeyUser() {
