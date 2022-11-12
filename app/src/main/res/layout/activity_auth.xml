@@ -22,7 +22,7 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/logo_apps"
+            android:src="@drawable/tut_wuri"
             android:layout_gravity="center"
             android:layout_marginBottom="6dp"/>
 
