@@ -19,6 +19,17 @@
         android:layout_centerInParent="true"
         android:gravity="center">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SD Negeri 1 Sukamaju"
+            android:includeFontPadding="false"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:layout_marginBottom="6dp"
+            android:layout_margin="32dp"/>
+
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -29,13 +40,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Authentication"
-            android:includeFontPadding="false"
-            android:textSize="16sp"
-            android:textAlignment="center"
+            android:layout_marginBottom="6dp"
             android:fontFamily="@font/poppins_bold"
+            android:includeFontPadding="false"
+            android:text="Authentication"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:layout_marginBottom="6dp"/>
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_in_btn"

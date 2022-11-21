@@ -11,7 +11,9 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.example.schoolabsence.Model.ModelAbsenceUsers;
+
 import com.example.schoolabsence.Model.ModelLocationSchool;
 import com.example.schoolabsence.Model.ModelUser;
 import com.example.schoolabsence.R;
@@ -57,6 +59,8 @@ public class HomeApp extends AppCompatActivity {
         setDateTime();
     }
 
+
+
     private void listenerComponent() {
         binding.accountImage.setOnClickListener(view -> {
             if (GlobalVariable.roleCurrent != null){
@@ -78,13 +82,13 @@ public class HomeApp extends AppCompatActivity {
             if (userAbsence != null){
                 if (!userAbsence.getTimeIn().equals("-") && !userAbsence.getTimeOut().equals("-")){
                     binding.absenceBtn.setEnabled(true);
-                    Toast.makeText(HomeApp.this, "You have done absence today", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeApp.this, "You have done presence today", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(HomeApp.this, "Please wait until the absence process is complete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeApp.this, "Please wait until the presence process is complete", Toast.LENGTH_SHORT).show();
                     getCurrentLocation();
                 }
             }else{
-                Toast.makeText(HomeApp.this, "Please wait until the absence process is complete", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeApp.this, "Please wait until the presence process is complete", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
             }
         });
@@ -156,41 +160,106 @@ public class HomeApp extends AppCompatActivity {
         String hour = time.substring(0, 2);
 
         if (userAbsence == null){
-            if (Integer.parseInt(hour) > 12){
+            binding.paramLate.setVisibility(View.VISIBLE);
+            if (Integer.parseInt(hour) >= 12){
                 modelAbsenceUsers = new ModelAbsenceUsers(
+                        0,
+                        0,
                         latitudeCurrent,
                         longitudeCurrent,
+                        "-",
                         distanceMeters+" Meters",
                         day,
                         "-",
                         time,
                         GlobalVariable.uidCurrent
                 );
+
+                binding.layoutOut.setVisibility(View.VISIBLE);
+                binding.distanceOut.setText(modelAbsenceUsers.getDistanceOut());
+                binding.hourTimeOut.setText(modelAbsenceUsers.getTimeOut() + " WIB");
+
+                if (Integer.parseInt(hour) < 15){
+                    binding.absenceOut.setColorFilter(getResources().getColor(R.color.green));
+                }
+
+                if (Integer.parseInt(hour) >= 15){
+                    binding.absenceOut.setColorFilter(getResources().getColor(R.color.red_calm));
+                }
+
             }else {
                 modelAbsenceUsers = new ModelAbsenceUsers(
                         latitudeCurrent,
                         longitudeCurrent,
+                        0,
+                        0,
                         distanceMeters+" Meters",
+                        "-",
                         day,
                         time,
                         "-",
                         GlobalVariable.uidCurrent
                 );
+
+                binding.layoutIn.setVisibility(View.VISIBLE);
+                binding.distanceIn.setText(modelAbsenceUsers.getDistanceIn());
+                binding.hourTimeIn.setText(modelAbsenceUsers.getTimeIn() + "WIB");
+
+                if (Integer.parseInt(hour) < 11){
+                    binding.absenceIn.setColorFilter(getResources().getColor(R.color.green));
+                }
+
+                if (Integer.parseInt(hour) >= 11){
+                    binding.absenceIn.setColorFilter(getResources().getColor(R.color.red_calm));
+                }
             }
         }else{
-            if (Integer.parseInt(hour) > 12){
+            binding.paramLate.setVisibility(View.VISIBLE);
+            if (Integer.parseInt(hour) >= 12){
+
                 userAbsence.setTimeOut(time);
+                userAbsence.setDistanceOut(distanceMeters+" Meters");
+                userAbsence.setLatitudeOut(latitudeCurrent);
+                userAbsence.setLongitudeOut(longitudeCurrent);
+
+                binding.layoutOut.setVisibility(View.VISIBLE);
+                binding.distanceOut.setText(userAbsence.getDistanceOut());
+                binding.hourTimeOut.setText(userAbsence.getTimeOut() + " WIB");
+
+                if (Integer.parseInt(hour) < 15){
+                    binding.absenceOut.setColorFilter(getResources().getColor(R.color.green));
+                }
+
+                if (Integer.parseInt(hour) >= 15){
+                    binding.absenceOut.setColorFilter(getResources().getColor(R.color.red_calm));
+                }
+
             }else {
                 userAbsence.setTimeIn(time);
+                userAbsence.setDistanceIn(distanceMeters+" Meters");
+                userAbsence.setLatitudeIn(latitudeCurrent);
+                userAbsence.setLatitudeIn(latitudeCurrent);
+
+                binding.layoutIn.setVisibility(View.VISIBLE);
+                binding.distanceIn.setText(userAbsence.getDistanceIn());
+                binding.hourTimeIn.setText(userAbsence.getTimeIn() + " WIB");
+
+                if (Integer.parseInt(hour) < 11){
+                    binding.absenceIn.setColorFilter(getResources().getColor(R.color.green));
+                }
+
+                if (Integer.parseInt(hour) >= 11){
+                    binding.absenceIn.setColorFilter(getResources().getColor(R.color.red_calm));
+                }
             }
 
             modelAbsenceUsers = userAbsence;
         }
 
         GlobalVariable.reference.child("absence_users").child(day).child(GlobalVariable.uidCurrent).setValue(modelAbsenceUsers).addOnSuccessListener(unused -> {
-            Toast.makeText(HomeApp.this, "Absence Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeApp.this, "Presence Success", Toast.LENGTH_SHORT).show();
             binding.imageAbsence.setImageResource(R.drawable.ic_clear_absence);
-            binding.textDirection.setText("Thank you for taking absence today");
+            binding.textDirection.setText("Thank you for taking Presence today");
 
         }).addOnFailureListener(e -> Toast.makeText(HomeApp.this, e.getMessage(), Toast.LENGTH_SHORT).show());
 
@@ -210,19 +279,51 @@ public class HomeApp extends AppCompatActivity {
             if (task.isSuccessful()){
                 userAbsence = task.getResult().getValue(ModelAbsenceUsers.class);
                 if (userAbsence != null){
+
                     if (userAbsence.getTimeIn().equals("-") && hour < 12){
-                        binding.textDirection.setText("Welcome, please absence in for today :)");
+                        binding.textDirection.setText("Welcome, please presence in for today :)");
                         binding.imageAbsence.setImageResource(R.drawable.ic_absence);
-                    }else if(userAbsence.getTimeOut().equals("-") && hour > 12){
-                        binding.textDirection.setText("Welcome, please absence out for today :)");
+                    }else if(userAbsence.getTimeOut().equals("-") && hour >= 12){
+                        binding.textDirection.setText("Welcome, please presence out for today :)");
                         binding.imageAbsence.setImageResource(R.drawable.ic_absence);
                     }else{
                         binding.imageAbsence.setImageResource(R.drawable.ic_clear_absence);
-                        binding.textDirection.setText("Thank you for taking absence today");
+                        binding.textDirection.setText("Thank you for taking presence today");
                         binding.absenceBtn.setEnabled(false);
                     }
+
+                    binding.paramLate.setVisibility(View.VISIBLE);
+
+                    // Absence in
+                    if (!userAbsence.getTimeIn().equals("-")){
+                        // Set too late or not presence
+                        binding.layoutIn.setVisibility(View.VISIBLE);
+                        String hourAbsenceTimeIn = userAbsence.getTimeIn().substring(0, 2);
+                        binding.distanceIn.setText(userAbsence.getDistanceIn());
+                        binding.hourTimeIn.setText(userAbsence.getTimeIn() + " WIB");
+                        if (Integer.parseInt(hourAbsenceTimeIn) < 11){
+                            binding.absenceIn.setColorFilter(getResources().getColor(R.color.green));
+                        }
+                        if (Integer.parseInt(hourAbsenceTimeIn) >= 11){
+                            binding.absenceIn.setColorFilter(getResources().getColor(R.color.red_calm));
+                        }
+                    }
+
+                    // Absence out
+                    if (!userAbsence.getTimeOut().equals("-")){
+                        binding.layoutOut.setVisibility(View.VISIBLE);
+                        String hourAbsenceTimeOut = userAbsence.getTimeOut().substring(0, 2);
+                        binding.distanceOut.setText(userAbsence.getDistanceOut());
+                        binding.hourTimeOut.setText(userAbsence.getTimeOut() + " WIB");
+                        if (Integer.parseInt(hourAbsenceTimeOut) < 15){
+                            binding.absenceOut.setColorFilter(getResources().getColor(R.color.green));
+                        }
+                        if (Integer.parseInt(hourAbsenceTimeOut) >= 15){
+                            binding.absenceOut.setColorFilter(getResources().getColor(R.color.red_calm));
+                        }
+                    }
                 }else {
-                    binding.textDirection.setText("Welcome, please absence for today :)");
+                    binding.textDirection.setText("Welcome, please presence for today :)");
                     binding.imageAbsence.setImageResource(R.drawable.ic_absence);
                 }
                 binding.absenceBtn.setVisibility(View.VISIBLE);

@@ -177,7 +177,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Recap Absence"
+                        android:text="Rekap Absence"
                         android:fontFamily="@font/poppins_medium"
                         android:textColor="@color/white"
                         android:textSize="13.5sp"/>

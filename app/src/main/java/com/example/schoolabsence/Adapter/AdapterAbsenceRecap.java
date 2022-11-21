@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.schoolabsence.Model.ModelAbsenceUsers;
 import com.example.schoolabsence.Model.ModelUser;
 import com.example.schoolabsence.R;
@@ -56,6 +58,35 @@ public class AdapterAbsenceRecap extends RecyclerView.Adapter<AdapterAbsenceReca
             bottomSheetDialog.show();
         });
 
+        holder.layoutTimeIn.setVisibility(View.VISIBLE);
+        holder.layoutTimeOut.setVisibility(View.VISIBLE);
+
+        String hourAbsenceIn = modelAbsenceUsers.getTimeIn();
+        String hourAbsenceOut = modelAbsenceUsers.getTimeOut();
+
+        if (hourAbsenceIn.equals("-")){
+            holder.indicatorPresenceTimeIn.setColorFilter(mContext.getResources().getColor(R.color.white));
+        }else{
+            if (Integer.parseInt(hourAbsenceIn.substring(0,2)) >= 11){
+                holder.indicatorPresenceTimeIn.setColorFilter(mContext.getResources().getColor(R.color.red_calm));
+            }
+        }
+
+//        if (!hourAbsenceIn.equals("-") && Integer.parseInt(hourAbsenceIn.substring(0,2)) >= 11 ){
+//            holder.indicatorPresenceTimeIn.setColorFilter(mContext.getResources().getColor(R.color.red_calm));
+//        }
+
+        if (hourAbsenceOut.equals("-")){
+            holder.indicatorPresenceTimeOut.setColorFilter(mContext.getResources().getColor(R.color.white));
+        }else{
+            if (Integer.parseInt(hourAbsenceOut.substring(0,2)) >= 15){
+                holder.indicatorPresenceTimeOut.setColorFilter(mContext.getResources().getColor(R.color.red_calm));
+            }
+        }
+
+//        if (!hourAbsenceOut.equals("-") && Integer.parseInt(hourAbsenceOut.substring(0,2)) >= 15 ){
+//            holder.indicatorPresenceTimeOut.setColorFilter(mContext.getResources().getColor(R.color.red_calm));
+//        }
     }
 
     @Override
@@ -64,9 +95,10 @@ public class AdapterAbsenceRecap extends RecyclerView.Adapter<AdapterAbsenceReca
     }
 
     public static class AbsenceRecapViewHolder extends RecyclerView.ViewHolder {
-        ImageView accountImage;
+        ImageView accountImage, indicatorPresenceTimeIn, indicatorPresenceTimeOut;
         TextView usernameTv, nikTv;
         CardView cardUser;
+        LinearLayout layoutTimeIn, layoutTimeOut;
         public AbsenceRecapViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -74,6 +106,10 @@ public class AdapterAbsenceRecap extends RecyclerView.Adapter<AdapterAbsenceReca
             usernameTv = itemView.findViewById(R.id.username_tv);
             nikTv = itemView.findViewById(R.id.nik_tv);
             cardUser = itemView.findViewById(R.id.card_user);
+            layoutTimeIn = itemView.findViewById(R.id.time_in_layout);
+            layoutTimeOut = itemView.findViewById(R.id.time_out_layout);
+            indicatorPresenceTimeIn = itemView.findViewById(R.id.indicator_presence_time_in);
+            indicatorPresenceTimeOut = itemView.findViewById(R.id.indicator_presence_time_out);
         }
     }
 
@@ -99,18 +135,21 @@ public class AdapterAbsenceRecap extends RecyclerView.Adapter<AdapterAbsenceReca
         LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View viewBottomDialog = li.inflate(R.layout.layout_dialog_detail_absence, null, false);
 
-        TextView textDateAttend, textTimeAttendIn,textTimeAttendOut, textDistanceAttend;
+        TextView textDateAttend, textTimeAttendIn,textTimeAttendOut, textDistanceAttendIn, textDistanceAttendOut;
         textDateAttend = viewBottomDialog.findViewById(R.id.text_date_attend);
         textTimeAttendIn = viewBottomDialog.findViewById(R.id.text_time_attend_in);
         textTimeAttendOut = viewBottomDialog.findViewById(R.id.text_time_attend_out);
-        textDistanceAttend = viewBottomDialog.findViewById(R.id.text_distance_attend);
+        textDistanceAttendIn = viewBottomDialog.findViewById(R.id.text_distance_attend_in);
+        textDistanceAttendOut = viewBottomDialog.findViewById(R.id.text_distance_attend_out);
+
 
         Button closeBtn = viewBottomDialog.findViewById(R.id.close_btn);
 
         textDateAttend.setText(modelAbsenceUsers.getDay());
         textTimeAttendIn.setText(modelAbsenceUsers.getTimeIn());
         textTimeAttendOut.setText(modelAbsenceUsers.getTimeOut());
-        textDistanceAttend.setText(modelAbsenceUsers.getDistance());
+        textDistanceAttendIn.setText(modelAbsenceUsers.getDistanceIn());
+        textDistanceAttendOut.setText(modelAbsenceUsers.getDistanceOut());
 
         closeBtn.setOnClickListener(view -> bottomSheetDialog.dismiss());
 

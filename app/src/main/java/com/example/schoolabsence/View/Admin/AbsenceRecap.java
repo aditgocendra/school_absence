@@ -4,13 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,21 +18,19 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.schoolabsence.Adapter.AdapterAbsenceRecap;
 import com.example.schoolabsence.Adapter.AdapterMonthSelection;
 import com.example.schoolabsence.Model.ModelAbsenceUsers;
+import com.example.schoolabsence.Model.ModelUser;
 import com.example.schoolabsence.R;
 import com.example.schoolabsence.Utility.GlobalFunction;
 import com.example.schoolabsence.Utility.GlobalVariable;
 import com.example.schoolabsence.databinding.ActivityAbsenceRecapBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -47,7 +42,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -69,6 +63,10 @@ public class AbsenceRecap extends AppCompatActivity {
     private String key = null;
     private String day = null;
     private boolean isLoadData = false;
+    private int countLatePresence = 0;
+    private int countPresence = 0;
+    private String fromDate, toDate;
+    private String titleReportDate;
 
 
     @Override
@@ -100,6 +98,7 @@ public class AbsenceRecap extends AppCompatActivity {
             if (task.isSuccessful()){
                 countData = task.getResult().getChildrenCount();
                 isLoadData = true;
+                binding.totalPresence.setText(String.valueOf(countData));
                 setDataAbsenceUsers(day);
             }else {
                 Toast.makeText(this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
@@ -125,10 +124,18 @@ public class AbsenceRecap extends AppCompatActivity {
             materialDatePicker.addOnPositiveButtonClickListener(selection -> {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
-                String fromDate = sdf.format(new Date(selection.first));
-                String toDate = sdf.format(new Date(selection.second));
+                fromDate = sdf.format(new Date(selection.first));
+                toDate = sdf.format(new Date(selection.second));
 
-                getReportData(fromDate, toDate);
+//                try {
+////                    Date from = new SimpleDateFormat("dd", Locale.ENGLISH).parse(fromDate);
+//                    Date to = new SimpleDateFormat("dd").parse(toDate);
+//                    Toast.makeText(this, to.toString(), Toast.LENGTH_SHORT).show();
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+                getReportData();
 
             });
         });
@@ -157,7 +164,7 @@ public class AbsenceRecap extends AppCompatActivity {
         });
     }
 
-    private void getReportData(String fromDate , String toDate){
+    private void getReportData(){
        listReportPdf = new ArrayList<>();
 
         GlobalVariable.reference.child("absence_users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -189,7 +196,8 @@ public class AbsenceRecap extends AppCompatActivity {
                 }
                 if (listReportPdf.size() > 0){
                     Log.d("test", String.valueOf(listReportPdf.size()));
-                    generateReport();
+                    setUsernameReport();
+//                    generateReport();
                 }else{
                     Toast.makeText(AbsenceRecap.this, "Belum ada satupun data absensi", Toast.LENGTH_SHORT).show();
                 }
@@ -203,12 +211,29 @@ public class AbsenceRecap extends AppCompatActivity {
         });
     }
 
+    private void setUsernameReport(){
+        for (int i = 0; i < listReportPdf.size(); i++) {
+            int finalI = i;
+            GlobalVariable.reference.child("users").child(listReportPdf.get(i).getKeyUser()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    ModelUser modelUser = task.getResult().getValue(ModelUser.class);
+                    listReportPdf.get(finalI).setKeyUser(modelUser.getUsername());
+                    if (finalI == listReportPdf.size() - 1){
+                        generateReport();
+                    }
+                }
+            });
+        }
+    }
+
     private void generateReport(){
-        int width = 1200;
+        int width = 1800;
 
         PdfDocument pdfDocument = new PdfDocument();
         Paint titlePaint = new Paint();
         Paint dataPaint = new Paint();
+        Paint greenPaint = new Paint();
+        Paint redPaint = new Paint();
 
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(width, 2000, 1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
@@ -217,7 +242,13 @@ public class AbsenceRecap extends AppCompatActivity {
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(32);
-        canvas.drawText("Laporan Absensi Guru", width / 2, 120, titlePaint);
+
+        greenPaint.setColor(getResources().getColor(R.color.green));
+        redPaint.setColor(getResources().getColor(R.color.red_calm));
+
+
+        canvas.drawText("Laporan Presensi Guru, dan Staff SD Negeri 1 Sukamaju", width / 2, 120, titlePaint);
+        canvas.drawText("Periode " + fromDate + " - " + toDate, width / 2, 155, titlePaint);
 
         dataPaint.setColor(Color.BLACK);
         dataPaint.setTextSize(30f);
@@ -228,24 +259,54 @@ public class AbsenceRecap extends AppCompatActivity {
 
         dataPaint.setTextAlign(Paint.Align.LEFT);
         dataPaint.setStyle(Paint.Style.FILL);
+
         canvas.drawText("No", 35, 230, dataPaint);
-        canvas.drawText("Tanggal Absen", 115, 230, dataPaint);
-        canvas.drawText("Absen Masuk",445, 230, dataPaint);
-        canvas.drawText("Absen Keluar", 665, 230, dataPaint);
-        canvas.drawText("Jarak", 930, 230, dataPaint);
+        canvas.drawText("Nama", 115, 230, dataPaint);
+        canvas.drawText("Tanggal Absen", 500, 230, dataPaint);
+        canvas.drawText("Masuk",730, 230, dataPaint);
+        canvas.drawText("Keluar", 890, 230, dataPaint);
+        canvas.drawText("Jarak (Masuk)", 1050, 230, dataPaint);
+        canvas.drawText("Jarak (Keluar)", 1400, 230, dataPaint);
 
         canvas.drawLine(100, 190, 100, 240, dataPaint);
-        canvas.drawLine(430, 190, 430, 240, dataPaint);
-        canvas.drawLine(650, 190, 650, 240, dataPaint);
-        canvas.drawLine(915, 190, 915, 240, dataPaint);
+        canvas.drawLine(490, 190, 490, 240, dataPaint);
+        canvas.drawLine(720, 190, 720, 240, dataPaint);
+        canvas.drawLine(880, 190, 880, 240, dataPaint);
+        canvas.drawLine(1040, 190, 1040, 240, dataPaint);
+        canvas.drawLine(1390, 190, 1390, 240, dataPaint);
 
         int yStart = 320;
         for (int i = 0; i < listReportPdf.size(); i++){
             canvas.drawText(String.valueOf(i+1), 35, yStart, dataPaint);
-            canvas.drawText(listReportPdf.get(i).getDay(), 115, yStart, dataPaint);
-            canvas.drawText(listReportPdf.get(i).getTimeIn(), 445, yStart, dataPaint);
-            canvas.drawText(listReportPdf.get(i).getTimeOut(), 665, yStart, dataPaint);
-            canvas.drawText(listReportPdf.get(i).getDistance(), 930, yStart, dataPaint);
+
+            canvas.drawText(listReportPdf.get(i).getKeyUser(), 115, yStart, dataPaint);
+
+            canvas.drawText(listReportPdf.get(i).getDay(), 500, yStart, dataPaint);
+
+            // Time in
+            String timeIn = listReportPdf.get(i).getTimeIn();
+            canvas.drawText(timeIn, 730, yStart, dataPaint);
+            if (!timeIn.equals("-")){
+                if (Integer.parseInt(timeIn.substring(0, 2)) < 11){
+                    canvas.drawCircle(840, yStart - 10, 13, greenPaint);
+                }else{
+                    canvas.drawCircle(840, yStart - 10, 13, redPaint);
+                }
+            }
+
+            // Time Out
+            String timeOut = listReportPdf.get(i).getTimeOut();
+            canvas.drawText(timeOut, 890, yStart, dataPaint);
+
+            if (!timeOut.equals("-")) {
+                if (Integer.parseInt(timeOut.substring(0, 2)) >= 15){
+                    canvas.drawCircle(1000, yStart - 10, 13, redPaint);
+                }else{
+                    canvas.drawCircle(1000, yStart - 10, 13, greenPaint);
+                }
+            }
+            canvas.drawText(listReportPdf.get(i).getDistanceIn(), 1050, yStart, dataPaint);
+            canvas.drawText(listReportPdf.get(i).getDistanceOut(), 1400, yStart, dataPaint);
 
             yStart += 40;
         }
@@ -287,6 +348,8 @@ public class AbsenceRecap extends AppCompatActivity {
             key = null;
             isLoadData = true;
             setDataAbsenceUsers(filterDay);
+            countLatePresence = 0;
+            countPresence = 0;
             bottomSheetDialog.dismiss();
         });
 
@@ -317,6 +380,28 @@ public class AbsenceRecap extends AppCompatActivity {
                         modelAbsenceUsers.setKey(ds.getKey());
                         key = ds.getKey();
                         listAbsenceUser.add(modelAbsenceUsers);
+
+
+                        // Set late data
+                        if (!modelAbsenceUsers.getTimeIn().equals("-")){
+                            String hourAbsenceIn = modelAbsenceUsers.getTimeIn().substring(0, 2);
+
+                            if (Integer.parseInt(hourAbsenceIn) >= 11){
+                                countLatePresence += 1;
+                            }else{
+                                countPresence += 1;
+                            }
+                        }
+
+                        if (!modelAbsenceUsers.getTimeOut().equals("-")){
+                            String hourAbsenceIn = modelAbsenceUsers.getTimeOut().substring(0, 2);
+
+                            if (Integer.parseInt(hourAbsenceIn) >= 15){
+                                countLatePresence += 1;
+                            }else{
+                                countPresence += 1;
+                            }
+                        }
                     }
                 }
 
@@ -326,6 +411,8 @@ public class AbsenceRecap extends AppCompatActivity {
                     if (listAbsenceUser.size() == 0){
                         Toast.makeText(AbsenceRecap.this, "nothing user absence record for today", Toast.LENGTH_SHORT).show();
                     }else {
+                        binding.totalLatePresence.setText(String.valueOf(countLatePresence));
+                        binding.totalPresence.setText(String.valueOf(countPresence));
                         adapterAbsenceRecap.setItem(listAbsenceUser);
                         adapterAbsenceRecap.notifyDataSetChanged();
                         Log.d("Item set", "True");

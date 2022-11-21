@@ -33,11 +33,28 @@
                 android:layout_marginTop="40dp"
                 android:src="@drawable/ic_back" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/tut_wuri"
-                android:layout_centerInParent="true"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/tut_wuri"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SD Negeri 1 Sukamaju"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_bold"
+                    />
+
+            </LinearLayout>
 
         </RelativeLayout>
 
